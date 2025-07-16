@@ -9,6 +9,7 @@ public class BookmarkResponseDto {
     private String address;
     private double latitude;
     private double longitude;
+    private boolean visited;
 
 
     public BookmarkResponseDto(Bookmark bookmark) {
@@ -18,6 +19,7 @@ public class BookmarkResponseDto {
         this.address = post.getAddress();
         this.latitude = post.getLatitude();
         this.longitude = post.getLongitude();
+        this.visited = bookmark.getVisited();
     }
 }
 

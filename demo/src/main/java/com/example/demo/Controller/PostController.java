@@ -6,12 +6,10 @@ import com.example.demo.Repository.UserRepository;
 import com.example.demo.ResponseDto.BookmarkResponseDto;
 import com.example.demo.ResponseDto.PostResponseDto;
 import com.example.demo.Service.PostService;
+import com.example.demo.domain.Post;
 import com.example.demo.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,12 +20,17 @@ public class PostController {
 
     private final PostService postService;
 
-    @GetMapping("/allPosts") // 모든 게시글 조회
+    @GetMapping("/allPosts") // 게시판에 올라온 모든 게시글 조회
     public List<PostResponseDto> getAllPosts() {
         return postService.getAllPosts();
     }
 
-
+    @GetMapping("/search") // 검색 기능
+    public List<PostResponseDto> searchPosts(@RequestParam("keyword") String keyword) {
+        return postService.searchPosts(keyword).stream()
+                .map(PostResponseDto::new)
+                .toList();
+    }
 }
 
 
