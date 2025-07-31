@@ -44,7 +44,7 @@ public class StampBoardController {
         return ResponseEntity.ok("삭제 완료");
     }
 
-    // 북마크 추가
+    // 스탬프보드에 북마크 추가
     @PostMapping("/{boardId}/bookmark")
     public ResponseEntity<?> addBookmark(@PathVariable Long boardId,
                                          @RequestBody Long bookmarkId) {
