@@ -2,6 +2,7 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name="StampBoard")
 @Getter
+@Setter
 public class StampBoard {
 
     @Id
@@ -25,6 +27,10 @@ public class StampBoard {
     @Column(nullable = false)
     private String title;
 
+    // 스탬프 색깔
+    @Column(nullable = false)
+    private String color;
+
     // 생성 시각
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -39,9 +45,9 @@ public class StampBoard {
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     // 기본 생성자
-    protected StampBoard() {}
+    public StampBoard() {}
 
-    public StampBoard(User user, String title) {
+    public StampBoard(User user, String title, String color) {
         this.user = user;
         this.title = title;
     }

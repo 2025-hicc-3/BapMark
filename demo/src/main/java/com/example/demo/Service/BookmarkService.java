@@ -23,6 +23,7 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
     private final PostRepository postRepository;
 
+    // 특정 유저의 북마크 목록 가져오기
     public List<BookmarkResponseDto> getBookmarksByUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -32,6 +33,7 @@ public class BookmarkService {
                 .toList();
     }
 
+    // 유저와 방문 여부에 따라 북마크 가져오기 (방문 여부 토글 기능에 사용)
     public List<BookmarkResponseDto> getBookmarksByUserAndVisited(Long userId, Boolean visited) {
 
         List<Bookmark> bookmarks = bookmarkRepository.findByUserIdAndVisited(userId, visited);
@@ -41,6 +43,7 @@ public class BookmarkService {
     }
 
     // 북마크 추가
+    @Transactional
     public void addBookmark(Long userId, Long postId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -57,6 +60,7 @@ public class BookmarkService {
 
 
     // 북마크 취소
+    @Transactional
     public void removeBookmark(Long userId, Long postId) {
         User user = userRepository.findById(userId).orElseThrow();
         Post post = postRepository.findById(postId).orElseThrow();

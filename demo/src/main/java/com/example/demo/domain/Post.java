@@ -2,10 +2,12 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="Post")
 @Getter
+@Setter
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

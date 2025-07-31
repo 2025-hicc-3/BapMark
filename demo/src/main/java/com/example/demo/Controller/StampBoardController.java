@@ -3,6 +3,7 @@ package com.example.demo.Controller;
 import com.example.demo.Service.StampBoardService;
 import com.example.demo.domain.Bookmark;
 import com.example.demo.domain.StampBoard;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "스탬프보드 API", description = "스탬프보드 관련 API입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/stampboards")
@@ -17,12 +19,26 @@ public class StampBoardController {
 
     private final StampBoardService stampBoardService;
 
-    // 생성
+    // 보드 생성
     @PostMapping
     public ResponseEntity<StampBoard> createBoard(@RequestParam Long userId,
-                                                  @RequestParam String title) {
-        StampBoard board = stampBoardService.createStampBoard(userId, title);
+                                                  @RequestParam String title, @RequestParam String color) {
+        StampBoard board = stampBoardService.createStampBoard(userId, title, color);
         return ResponseEntity.ok(board);
+    }
+
+    // 보드 이름 수정
+    @PatchMapping("/{boardId}/title")
+    public ResponseEntity<?> updateBoardTitle(@PathVariable Long boardId, @RequestParam String title) {
+        stampBoardService.updateBoardTitle(boardId, title);
+        return ResponseEntity.ok("보드 이름이 수정되었습니다.");
+    }
+
+    // 보드 컬러 수정
+    @PatchMapping("/{boardId}/color")
+    public ResponseEntity<?> updateBoardColor(@PathVariable Long boardId, @RequestParam String color) {
+        stampBoardService.updateBoardColor(boardId, color);
+        return ResponseEntity.ok("보드 컬러가 수정되었습니다.");
     }
 
     // 유저의 보드 목록 조회
@@ -37,14 +53,14 @@ public class StampBoardController {
         return ResponseEntity.ok(stampBoardService.getStampBoard(id));
     }
 
-    // 삭제
+    // 보드 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable Long id) {
         stampBoardService.deleteStampBoard(id);
         return ResponseEntity.ok("삭제 완료");
     }
 
-    // 북마크 추가
+    // 스탬프보드에 북마크 추가
     @PostMapping("/{boardId}/bookmark")
     public ResponseEntity<?> addBookmark(@PathVariable Long boardId,
                                          @RequestBody Long bookmarkId) {
@@ -57,6 +73,21 @@ public class StampBoardController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage()); // 404 Not Found
         }
     }
+
+    // 스탬프보드에서 북마크 삭제
+    @DeleteMapping("/{boardId}/bookmark")
+    public ResponseEntity<?> removeBookmark(@PathVariable Long boardId,
+                                            @RequestBody Long bookmarkId) {
+        try {
+            stampBoardService.removeBookmarkFromBoard(boardId, bookmarkId);
+            return ResponseEntity.ok("북마크 삭제 완료");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
+
+    }
+
 
 }
 

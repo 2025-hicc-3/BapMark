@@ -1,21 +1,20 @@
 package com.example.demo.Controller;
 
 import com.example.demo.Repository.BookmarkRepository;
-import com.example.demo.Repository.PostRepository;
-import com.example.demo.Repository.UserRepository;
 import com.example.demo.ResponseDto.BookmarkResponseDto;
 import com.example.demo.ResponseDto.StampBoardDto;
 import com.example.demo.Service.BookmarkService;
 import com.example.demo.domain.Bookmark;
-import com.example.demo.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 import java.util.List;
 
 
-
+@Tag(name = "북마크 API", description = "사용자별 북마크 관련 API입니다")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
