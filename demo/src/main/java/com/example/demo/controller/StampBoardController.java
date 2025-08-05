@@ -1,11 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.jwt.UserDetailsImpl;
 import com.example.demo.service.StampBoardService;
 import com.example.demo.domain.StampBoard;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,10 +43,12 @@ public class StampBoardController {
     }
 
     // 유저의 보드 목록 조회
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<StampBoard>> getBoardsByUser(@PathVariable Long userId) {
+    @GetMapping("/me/boards")
+    public ResponseEntity<List<StampBoard>> getMyBoards(@AuthenticationPrincipal UserDetailsImpl user) {
+        Long userId = user.getId();
         return ResponseEntity.ok(stampBoardService.getStampBoardsByUser(userId));
     }
+
 
     // 특정 보드 상세 조회
     @GetMapping("/{id}")

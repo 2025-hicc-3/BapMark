@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.jwt.UserDetailsImpl;
 import com.example.demo.repository.BookmarkRepository;
 import com.example.demo.responseDto.BookmarkResponseDto;
 import com.example.demo.responseDto.StampBoardDto;
@@ -7,6 +8,7 @@ import com.example.demo.service.BookmarkService;
 import com.example.demo.domain.Bookmark;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -23,17 +25,20 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
     private final BookmarkRepository bookmarkRepository;
 
-    @GetMapping("/{userId}/bookmarks") // 아이디 보고 북마크 가져오기
-    public List<BookmarkResponseDto> getBookmarksByUser(
-            @PathVariable Long userId,
+    @GetMapping("/me/bookmarks")
+    public List<BookmarkResponseDto> getMyBookmarks(
+            @AuthenticationPrincipal UserDetailsImpl user,
             @RequestParam(required = false) Boolean visited
     ) {
+        Long userId = user.getId(); // JWT에서 추출된 사용자 ID
+
         if (visited == null) {
-            return bookmarkService.getBookmarksByUser(userId); // 전체
+            return bookmarkService.getBookmarksByUser(userId);
         } else {
-            return bookmarkService.getBookmarksByUserAndVisited(userId, visited); // 필터링
+            return bookmarkService.getBookmarksByUserAndVisited(userId, visited);
         }
     }
+
 
 
     // 게시글로 북마크 추가
