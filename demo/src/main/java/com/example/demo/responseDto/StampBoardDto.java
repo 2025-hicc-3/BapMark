@@ -1,4 +1,4 @@
-package com.example.demo.ResponseDto;
+package com.example.demo.responseDto;
 
 import com.example.demo.domain.StampBoard;
 import lombok.AllArgsConstructor;

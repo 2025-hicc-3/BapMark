@@ -1,6 +1,6 @@
-package com.example.demo.Controller;
+package com.example.demo.controller;
 
-import com.example.demo.Service.ShareLinkService;
+import com.example.demo.service.ShareLinkService;
 import com.example.demo.domain.User;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,8 @@
-package com.example.demo.Controller;
+package com.example.demo.controller;
 
-import com.example.demo.ResponseDto.PostRequestDto;
-import com.example.demo.ResponseDto.PostResponseDto;
-import com.example.demo.Service.PostService;
+import com.example.demo.responseDto.PostRequestDto;
+import com.example.demo.responseDto.PostResponseDto;
+import com.example.demo.service.PostService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

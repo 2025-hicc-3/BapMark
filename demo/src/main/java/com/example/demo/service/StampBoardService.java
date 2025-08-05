@@ -1,8 +1,8 @@
-package com.example.demo.Service;
+package com.example.demo.service;
 
-import com.example.demo.Repository.BookmarkRepository;
-import com.example.demo.Repository.StampBoardRepository;
-import com.example.demo.Repository.UserRepository;
+import com.example.demo.repository.BookmarkRepository;
+import com.example.demo.repository.StampBoardRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.domain.Bookmark;
 import com.example.demo.domain.StampBoard;
 import com.example.demo.domain.User;

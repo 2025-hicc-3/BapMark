@@ -1,16 +1,15 @@
-package com.example.demo.Service;
+package com.example.demo.service;
 
-import com.example.demo.Repository.BookmarkRepository;
-import com.example.demo.Repository.PostRepository;
-import com.example.demo.Repository.UserRepository;
-import com.example.demo.ResponseDto.BookmarkResponseDto;
+import com.example.demo.repository.BookmarkRepository;
+import com.example.demo.repository.PostRepository;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.responseDto.BookmarkResponseDto;
 import com.example.demo.domain.Bookmark;
 import com.example.demo.domain.Post;
 import com.example.demo.domain.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;

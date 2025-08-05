@@ -1,8 +1,8 @@
-package com.example.demo.Service;
+package com.example.demo.service;
 
-import com.example.demo.Repository.PostRepository;
-import com.example.demo.ResponseDto.PostRequestDto;
-import com.example.demo.ResponseDto.PostResponseDto;
+import com.example.demo.repository.PostRepository;
+import com.example.demo.responseDto.PostRequestDto;
+import com.example.demo.responseDto.PostResponseDto;
 import com.example.demo.domain.Post;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,9 @@
-package com.example.demo.Controller;
+package com.example.demo.controller;
 
-import com.example.demo.Repository.BookmarkRepository;
-import com.example.demo.ResponseDto.BookmarkResponseDto;
-import com.example.demo.ResponseDto.StampBoardDto;
-import com.example.demo.Service.BookmarkService;
+import com.example.demo.repository.BookmarkRepository;
+import com.example.demo.responseDto.BookmarkResponseDto;
+import com.example.demo.responseDto.StampBoardDto;
+import com.example.demo.service.BookmarkService;
 import com.example.demo.domain.Bookmark;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

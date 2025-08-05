@@ -1,7 +1,6 @@
-package com.example.demo.Controller;
+package com.example.demo.controller;
 
-import com.example.demo.Service.StampBoardService;
-import com.example.demo.domain.Bookmark;
+import com.example.demo.service.StampBoardService;
 import com.example.demo.domain.StampBoard;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
