@@ -7,12 +7,15 @@ import com.example.demo.responseDto.StampBoardDto;
 import com.example.demo.service.BookmarkService;
 import com.example.demo.domain.Bookmark;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.server.ResponseStatusException;
 
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 
@@ -43,35 +46,50 @@ public class BookmarkController {
 
     // 게시글로 북마크 추가
     @PostMapping("/{postId}")
-    public ResponseEntity<?> bookmark(@PathVariable Long postId, @RequestParam Long userId) {
+    public ResponseEntity<?> bookmark(@PathVariable Long postId,
+                                      @AuthenticationPrincipal UserDetailsImpl user) {
+        Long userId = user.getId(); // JWT에서 꺼낸 실제 로그인한 사용자
         bookmarkService.addBookmark(userId, postId);
         return ResponseEntity.ok("북마크 완료");
     }
 
     // 북마크 취소
     @DeleteMapping("/{postId}")
-    public ResponseEntity<?> unbookmark(@PathVariable Long postId, @RequestParam Long userId) {
+    public ResponseEntity<?> unbookmark(@PathVariable Long postId,
+                                        @AuthenticationPrincipal UserDetailsImpl user) {
+        Long userId = user.getId(); // 인증된 사용자 ID
         bookmarkService.removeBookmark(userId, postId);
         return ResponseEntity.ok("북마크 취소됨");
     }
 
+
     @PostMapping("/search") // 검색으로 북마크 추가
     public ResponseEntity<String> addBookmarkBySearch(
-            @RequestParam Long userId,
+            @AuthenticationPrincipal UserDetailsImpl user,
             @RequestParam String placeName,
             @RequestParam String address,
             @RequestParam Double latitude,
             @RequestParam Double longitude
     ) {
+        Long userId = user.getId(); // JWT에서 인증된 사용자 ID 추출
         bookmarkService.addBookmarkBySearch(userId, placeName, address, latitude, longitude);
         return ResponseEntity.ok("Bookmark added by search");
     }
 
+
     // 이 북마크가 어디 스탬프판에 속하는지 불러옴
     @GetMapping("/{bookmarkId}/stampboards")
-    public ResponseEntity<List<StampBoardDto>> getBoardsForBookmark(@PathVariable Long bookmarkId) {
+    public ResponseEntity<List<StampBoardDto>> getBoardsForBookmark(
+            @PathVariable Long bookmarkId,
+            @AuthenticationPrincipal UserDetailsImpl user) {
+
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                 .orElseThrow(() -> new RuntimeException("Bookmark not found"));
+
+        // ✅ 로그인한 유저가 이 북마크의 소유자인지 검증
+        if (!bookmark.getUser().getId().equals(user.getId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "접근 권한이 없습니다.");
+        }
 
         List<StampBoardDto> result = bookmark.getStampBoard().stream()
                 .map(StampBoardDto::fromEntity)
@@ -79,5 +97,6 @@ public class BookmarkController {
 
         return ResponseEntity.ok(result);
     }
+
 
 }

@@ -28,4 +28,6 @@ public class Post {
     @Column(nullable = false)
     private double longitude;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user; // ✅ 작성자 필드
 }
