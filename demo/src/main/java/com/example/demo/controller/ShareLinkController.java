@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
+import java.nio.file.AccessDeniedException;
+
 // 여기 수정할 차례 8/6
 @Tag(name = "공유링크 API", description = "공유링크 관련 API입니다")
 @RestController
@@ -20,7 +23,7 @@ public class ShareLinkController {
 
     @PostMapping("/{stampBoardId}")
     public ResponseEntity<String> createShareLink(@PathVariable Long stampBoardId,
-                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                                  @AuthenticationPrincipal UserDetailsImpl userDetails) throws AccessDeniedException {
         Long userId = userDetails.getUser().getId();
 
         String url = shareLinkService.createShareLink(stampBoardId, userId); // userId 전달

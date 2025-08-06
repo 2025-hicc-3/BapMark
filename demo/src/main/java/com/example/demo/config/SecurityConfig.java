@@ -2,6 +2,7 @@ package com.example.demo.config;
 
 import com.example.demo.jwt.JwtAuthenticationFilter;
 import com.example.demo.jwt.JwtProvider;
+import com.example.demo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,7 @@ public class SecurityConfig {
     private final JwtProvider jwtProvider;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, UserRepository userRepository) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session
@@ -28,7 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll() // 로그인 관련은 모두 허용
                         .anyRequest().authenticated() // 나머지는 인증 필요
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider, userRepository), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
