@@ -25,8 +25,17 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // 로그인 관련은 모두 허용
-                        .anyRequest().authenticated() // 나머지는 인증 필요
+                        .requestMatchers(
+                                "/api/auth/**",                    // 로그인 관련은 허용
+                                "/v3/api-docs/**",                 // Swagger 문서
+                                "/swagger-ui/**",                 // Swagger UI
+                                "/swagger-ui.html",               // Swagger HTML 진입점
+                                "/openapi/**",              // 우리가 설정한 API docs 커스텀 경로
+                                "/docs/**",                 // 우리가 커스터마이징한 Swagger UI 경로
+                                "/swagger-resources/**",          // Swagger 리소스
+                                "/webjars/**"                     // Swagger 스타일/스크립트
+                        ).permitAll()
+                        .anyRequest().authenticated()           // 나머지는 인증 필요
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();
