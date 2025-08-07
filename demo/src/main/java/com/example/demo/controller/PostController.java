@@ -39,7 +39,7 @@ public class PostController {
                 .toList();
     }
 
-    @Operation(summary = "게시글 등록")
+    @Operation(summary = "본인이 작성한 모든 글 조회")
     // 본인이 작성했던 모든 글 불러오기
     @GetMapping("/me")
     public ResponseEntity<List<Post>> getMyPosts(@AuthenticationPrincipal UserDetailsImpl userDetails) {
@@ -48,6 +48,7 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @Operation(summary = "게시글 등록")
     @PostMapping("/")
     public ResponseEntity<?> createPost(@RequestBody PostRequestDto dto,
                                         @AuthenticationPrincipal UserDetailsImpl user) {
