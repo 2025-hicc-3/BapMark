@@ -5,6 +5,7 @@ import com.example.demo.responseDto.BookmarkResponseDto;
 import com.example.demo.responseDto.StampBoardDto;
 import com.example.demo.service.BookmarkService;
 import com.example.demo.domain.Bookmark;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +24,7 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
     private final BookmarkRepository bookmarkRepository;
 
+    @Operation(summary = "사용자의 북마크 전체 또는 방문 여부 필터링 조회")
     @GetMapping("/{userId}/bookmarks") // 아이디 보고 북마크 가져오기
     public List<BookmarkResponseDto> getBookmarksByUser(
             @PathVariable Long userId,
@@ -37,6 +39,7 @@ public class BookmarkController {
 
 
     // 게시글로 북마크 추가
+    @Operation(summary = "게시글 ID로 북마크 추가")
     @PostMapping("/{postId}")
     public ResponseEntity<?> bookmark(@PathVariable Long postId, @RequestParam Long userId) {
         bookmarkService.addBookmark(userId, postId);
@@ -44,12 +47,14 @@ public class BookmarkController {
     }
 
     // 북마크 취소
+    @Operation(summary = "게시글 ID로 북마크 취소")
     @DeleteMapping("/{postId}")
     public ResponseEntity<?> unbookmark(@PathVariable Long postId, @RequestParam Long userId) {
         bookmarkService.removeBookmark(userId, postId);
         return ResponseEntity.ok("북마크 취소됨");
     }
 
+    @Operation(summary = "장소 정보로 북마크 추가 (검색 기반)")
     @PostMapping("/search") // 검색으로 북마크 추가
     public ResponseEntity<String> addBookmarkBySearch(
             @RequestParam Long userId,
@@ -63,6 +68,7 @@ public class BookmarkController {
     }
 
     // 이 북마크가 어디 스탬프판에 속하는지 불러옴
+    @Operation(summary = "특정 북마크가 속한 스탬프판 리스트 조회")
     @GetMapping("/{bookmarkId}/stampboards")
     public ResponseEntity<List<StampBoardDto>> getBoardsForBookmark(@PathVariable Long bookmarkId) {
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)

@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.service.ShareLinkService;
 import com.example.demo.domain.User;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,14 @@ public class ShareLinkController {
 
     private final ShareLinkService shareLinkService;
 
+    @Operation(summary = "스탬프판 공유 링크 생성")
     @PostMapping("/{stampBoardId}")
     public ResponseEntity<String> createShareLink(@PathVariable Long stampBoardId) {
         String url = shareLinkService.createShareLink(stampBoardId);
         return ResponseEntity.ok(url);
     }
 
+    @Operation(summary = "공유 링크로 스탬프판 복사")
     @GetMapping("/{uuid}")
     public ResponseEntity<String> importSharedBoard(@PathVariable String uuid,
                                                     @AuthenticationPrincipal User user) {
