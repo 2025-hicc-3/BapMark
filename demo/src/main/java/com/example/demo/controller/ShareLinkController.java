@@ -12,7 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import java.nio.file.AccessDeniedException;
 
-// 여기 수정할 차례 8/6
+
 @Tag(name = "공유링크 API", description = "공유링크 관련 API입니다")
 @RestController
 @RequiredArgsConstructor

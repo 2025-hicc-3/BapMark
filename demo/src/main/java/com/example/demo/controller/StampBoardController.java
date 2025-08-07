@@ -121,6 +121,8 @@ public class StampBoardController {
             return ResponseEntity.ok("북마크 삭제 완료");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (AccessDeniedException e) {
+            throw new RuntimeException(e);
         }
     }
 

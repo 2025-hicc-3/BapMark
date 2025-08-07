@@ -111,9 +111,14 @@ public class StampBoardService {
 
 
     @Transactional
-    public void removeBookmarkFromBoard(Long boardId, Long bookmarkId, Long userId) {
+    public void removeBookmarkFromBoard(Long boardId, Long bookmarkId, Long userId) throws AccessDeniedException {
+
         StampBoard board = stampBoardRepository.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("스탬프 보드를 찾을 수 없습니다."));
+
+        if (!board.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("해당 보드에 접근할 권한이 없습니다.");
+        }
 
         Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
                 .orElseThrow(() -> new RuntimeException("북마크를 찾을 수 없습니다."));
