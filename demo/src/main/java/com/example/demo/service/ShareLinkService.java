@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
+import java.nio.file.AccessDeniedException;
 import java.util.UUID;
 
 @Service
@@ -18,9 +19,15 @@ public class ShareLinkService {
     private final ShareLinkRepository shareLinkRepository;
     private final StampBoardRepository stampBoardRepository;
 
-    public String createShareLink(Long boardId) {
+    public String createShareLink(Long boardId, Long userId) throws AccessDeniedException {
         StampBoard board = stampBoardRepository.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
+
+        // 🔐 소유자 검증 추가
+        if (!board.getUser().getId().equals(userId)) {
+            throw new AccessDeniedException("공유 링크를 생성할 권한이 없습니다.");
+        }
+
         String uuid = UUID.randomUUID().toString();
 
         ShareLink link = new ShareLink();
@@ -30,6 +37,7 @@ public class ShareLinkService {
 
         return "https://yourdomain.com/share/" + uuid;
     }
+
 
     public void importSharedBoard(String uuid, User user) {
         ShareLink link = shareLinkRepository.findByUuid(uuid)
