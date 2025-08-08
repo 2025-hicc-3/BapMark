@@ -13,12 +13,19 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; //DB에서 자동 증가하는 기본키 (PK)
 
     @Column(nullable = false)
-    private String oauthId; // ✅ 카멜케이스 추천
+    private String oauthId; // 구글에서 내려준 유저 식별자 (변경 불가)
 
     @Column(nullable = false)
     private String email;
+
+    @Column(nullable = true)
+    private String nickname;
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
 }
