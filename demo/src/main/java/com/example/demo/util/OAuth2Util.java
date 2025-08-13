@@ -35,6 +35,9 @@ public class OAuth2Util {
             }
 
             Payload payload = idToken.getPayload();
+            //로그 출력: payload에 담긴 정보를 콘솔에서 확인 가능하다.
+            System.out.println("[Google OAUth] payload = \n" + payload.toPrettyString());
+
             String sub = payload.getSubject(); // Google의 고유 ID
             String email = payload.getEmail();
 

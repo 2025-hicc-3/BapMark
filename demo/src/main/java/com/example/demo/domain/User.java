@@ -21,7 +21,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = true)
+    @Column(nullable = true,unique = true)
     private String nickname;
 
     public void updateNickname(String nickname) {

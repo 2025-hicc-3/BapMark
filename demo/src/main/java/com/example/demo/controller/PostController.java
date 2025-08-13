@@ -3,7 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.domain.Post;
 import com.example.demo.domain.User;
 import com.example.demo.jwt.UserDetailsImpl;
-import com.example.demo.responseDto.PostRequestDto;
+import com.example.demo.requestDto.PostRequestDto;
 import com.example.demo.responseDto.PostResponseDto;
 import com.example.demo.service.PostService;
 

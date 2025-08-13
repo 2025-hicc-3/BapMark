@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.responseDto.LoginResponseDto;
-import com.example.demo.responseDto.TokenRequestDto;
+import com.example.demo.requestDto.TokenRequestDto;
 import com.example.demo.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
