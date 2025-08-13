@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.domain.User;
 import com.example.demo.repository.PostRepository;
-import com.example.demo.responseDto.PostRequestDto;
+import com.example.demo.requestDto.PostRequestDto;
 import com.example.demo.responseDto.PostResponseDto;
 import com.example.demo.domain.Post;
 import jakarta.transaction.Transactional;

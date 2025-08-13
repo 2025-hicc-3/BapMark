@@ -46,7 +46,8 @@ public class SecurityConfig {
                                 "/openapi.yaml",
                                 "/docs/**",
                                 "/swagger-resources/**",
-                                "/webjars/**"
+                                "/webjars/**",
+                                "/login-test.html" //로그인 테스트용 html
                         ).permitAll()
 
                         // 그 외는 인증 필요

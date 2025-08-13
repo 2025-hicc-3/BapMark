@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.jwt.UserDetailsImpl;
 import com.example.demo.requestDto.UpdateNicknameRequestDto;
 import com.example.demo.responseDto.UserInfoResponseDto;
 import com.example.demo.repository.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "User", description = "유저 관련 API")
@@ -22,16 +24,10 @@ public class UserController {
 
     private final UserRepository userRepository;
 
-    @Operation(summary = "내 정보 조회", description = "JWT로 인증된 내 유저 정보를 조회합니다.")
-    @GetMapping("/me")
-    public ResponseEntity<UserInfoResponseDto> getMyInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = (String) authentication.getPrincipal();
-
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
-
-        return ResponseEntity.ok(new UserInfoResponseDto(user));
+    @Operation(summary = "내 정보 조회", description = "JWT로 인증된 내 유저 정보를 조회합니다.")@GetMapping("/me")
+    public ResponseEntity<UserInfoResponseDto> getMyInfo(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser(); // ✔️ 바로 principal에서 유저 정보 추출
+        return ResponseEntity.ok(new UserInfoResponseDto(user)); // ✔️ 응답 반환
     }
 
     private final UserService userService;
@@ -55,11 +51,11 @@ public class UserController {
     //닉네임 변경
     @Operation(summary = "닉네임 변경", description = "JWT로 인증된 유저의 닉네임을 수정합니다.")
     @PatchMapping("/me")
-    public ResponseEntity<String> updateNickname(@RequestBody UpdateNicknameRequestDto request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = (String) authentication.getPrincipal();
+    public ResponseEntity<String> updateNickname(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody UpdateNicknameRequestDto request) {
 
-        User user = userRepository.findByEmail(email)
+        User user = userRepository.findByEmail(userDetails.getUsername()) // 또는 userDetails.getUser()
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
 
         userService.updateNickname(user.getId(), request.getNickname());

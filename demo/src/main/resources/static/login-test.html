@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>🐸 테스트용 Google 로그인 테스트 페이지 🐸</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+<h2>🐸 Google 로그인 테스트 페이지 🐸</h2>
+
+<!-- ✅ 구글 로그인 버튼 -->
+<div id="g_id_onload"
+     data-client_id="259615437161-8u2923f0uqb79qtgnodukisb9bncl6gi.apps.googleusercontent.com"
+     data-callback="handleCredentialResponse"
+     data-auto_prompt="false"
+     data-scope="email profile">
+</div>
+
+<div class="g_id_signin"
+     data-type="standard"
+     data-size="large"
+     data-theme="outline"
+     data-text="signin_with"
+     data-shape="rectangular"
+     data-logo_alignment="left">
+</div>
+
+<hr>
+
+<!-- ✅ JWT 표시 -->
+<h3>🔑 JWT Token:</h3>
+<textarea id="token" style="width:100%;height:100px;"></textarea>
+
+<!-- ✅ 사용자 정보 확인 -->
+<button onclick="getMyInfo()">📩 내 정보 불러오기</button>
+<pre id="userInfo"></pre>
+
+<hr>
+
+<!-- ✅ 닉네임 변경 기능 -->
+<h3>✏️ 닉네임 변경</h3>
+<input type="text" id="nicknameInput" placeholder="새 닉네임 입력" />
+<button onclick="updateNickname()">닉네임 저장</button>
+
+<script>
+    function handleCredentialResponse(response) {
+        const idToken = response.credential;
+
+        fetch("http://localhost:8080/api/auth/google", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idToken: idToken })
+        })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("token").value = data.accessToken;
+                alert("로그인 성공! JWT 토큰이 발급되었습니다.");
+            });
+    }
+
+    function getMyInfo() {
+        const token = document.getElementById("token").value;
+
+        fetch("http://localhost:8080/api/user/me", {
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        })
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("userInfo").innerText = JSON.stringify(data, null, 2);
+            });
+    }
+
+    function updateNickname() {
+        const token = document.getElementById("token").value;
+        const nickname = document.getElementById("nicknameInput").value;
+
+        fetch("http://localhost:8080/api/user/me", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({ nickname: nickname })
+        })
+            .then(res => {
+                if (res.ok) {
+                    alert("닉네임 변경 성공!");
+                    getMyInfo(); // 변경 후 내 정보 갱신
+                } else {
+                    alert("닉네임 변경 실패!");
+                }
+            });
+    }
+</script>
+</body>
+</html>
