@@ -2,7 +2,11 @@ package com.example.demo.responseDto;
 
 import com.example.demo.domain.Bookmark;
 import com.example.demo.domain.Post;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class BookmarkResponseDto {
     private Long postId;
     private String title;
