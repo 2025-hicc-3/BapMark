@@ -55,8 +55,7 @@ public class UserController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestBody UpdateNicknameRequestDto request) {
 
-        User user = userRepository.findByEmail(userDetails.getUsername()) // 또는 userDetails.getUser()
-                .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다."));
+        User user = userDetails.getUser(); // 인증된 사용자 정보 (null 아님 보장)
 
         userService.updateNickname(user.getId(), request.getNickname());
 

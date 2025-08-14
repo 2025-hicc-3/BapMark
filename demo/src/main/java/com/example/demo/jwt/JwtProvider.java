@@ -20,8 +20,8 @@ public class JwtProvider {
 
     public String generateToken(String oauthId, String email) {
         return Jwts.builder()
-                .setSubject(oauthId)
-                .claim("email", email)
+                .setSubject(email)
+                .claim("oauthId", oauthId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -47,6 +47,6 @@ public class JwtProvider {
 
     public String getEmailFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build()
-                .parseClaimsJws(token).getBody().get("email", String.class);
+                .parseClaimsJws(token).getBody().getSubject();
     }
 }
