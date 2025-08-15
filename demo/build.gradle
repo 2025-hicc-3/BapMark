@@ -9,6 +9,7 @@ bootJar {
 	archiveFileName = 'bapmark.jar' // 원하는 실행파일 이름
 }
 
+
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
